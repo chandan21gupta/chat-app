@@ -2,6 +2,7 @@ var http = require('http');
 var path = require('path');
 var express = require('express');
 var socketio = require('socket.io');
+const { generateMessage } = require('./utils/messages');
 
 const app = express();
 const server = http.createServer(app);
@@ -16,8 +17,8 @@ let count = 0;
 
 io.on('connection',(socket) => {
   //console.log(socket);
-  socket.emit('message','Welcome!');
-  socket.broadcast.emit('message','A new user has joined!');
+  socket.emit('message',generateMessage('Welcome!'));
+  socket.broadcast.emit('message',generateMessage('A new user has joined!'));
 
   socket.on('sendLocation',(coords,callback) => {
     io.emit('locationMessage',`https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
@@ -25,12 +26,12 @@ io.on('connection',(socket) => {
   });
 
   socket.on('sendMessage',(message,callback) => {
-    io.emit('message',message);
+    io.emit('message',generateMessage(message));
     callback();
   });
 
   socket.on('disconnect',() => {
-    io.emit('message','A user has left!');
+    io.emit('message',generateMessage('A user has left!'));
   });
 
 });

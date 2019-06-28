@@ -22,7 +22,8 @@ socket.on('message',(message) => {
 socket.on('locationMessage',(url) => {
   console.log(url);
   const html = Mustache.render(locationMessageTemplate,{
-    url
+    url : url.text,
+    createdAt : moment(url.createdAt).format('h:mm a')
   });
   $messages.insertAdjacentHTML('beforeend',html);
 });
@@ -47,7 +48,7 @@ $messageForm.addEventListener('submit', (e) => {
 });
 
 
-document.querySelector('#send-location').addEventListener('click', () => {
+$sendLocationButton.addEventListener('click', () => {
   if(!navigator.geolocation) {
     return alert('Geolocation is not supported by your browser');
   }

@@ -21,7 +21,7 @@ io.on('connection',(socket) => {
   socket.broadcast.emit('message',generateMessage('A new user has joined!'));
 
   socket.on('sendLocation',(coords,callback) => {
-    io.emit('locationMessage',`https://google.com/maps?q=${coords.latitude},${coords.longitude}`);
+    io.emit('locationMessage',generateMessage(`https://google.com/maps?q=${coords.latitude},${coords.longitude}`));
     callback();
   });
 
